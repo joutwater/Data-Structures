@@ -1,7 +1,7 @@
 # Week 1 Assignment
 ## First steps in parsing unstructured web data
 
-Through this assignment, students are opened up to the concept of data acquisiton, one of the first processes in creating a data visualization. In this case, our task is to create a Javascript code that extracts HTML body text from ten different AA websites in NYC, writes ten new .txt files corresponding to each website, and stores them all in a specific directory.  
+Through this assignment, students are opened up to the concept of data acquisiton, one of the first processes in creating a data visualization. In this case, our task is to create a Javascript code that extracts HTML body text from ten different NYC Alcoholics Anonymous websites, writes ten new .txt files corresponding to each website, and stores them all in a specific directory.  
 
 ### Step 1
 We are given a starter code that correctly executes the task for a single, example website and directory. We now have to figure out how to write a function that iterates this ten times with our assigned data.
@@ -49,7 +49,7 @@ Create variables for both the URLs and directory destinations, using array and t
     ];
     
 ### Step 3
-At this point, we know that we need to create a connection between the URL and directory variables, and we need to be able to iterate that process ten times, once to create each .txt file. One idea is to wrap the sample code framework in a for loop, which would theoretically assign each url request to its corresponding directory path and .txt file name. However, due to the asynchronus nature of Javascript, the for loop runs the iterations faster than the information can be requested, and thus, the code does not execute our task. 
+At this point, we know that we need to create a connection between the URL and directory variables, and we need to be able to iterate that process ten times, once to create each .txt file. One idea is to wrap the sample code framework in a for loop, which would theoretically assign each url request to its corresponding directory path and .txt file name. However, due to the asynchronus nature of Javascript, the for loop runs the iterations faster than the information can be requested, and thus, the code cannot not execute our task. 
 
     for (var i=0; i<10; i++) {
         request(urls[i], function(error, response, body){
@@ -61,7 +61,7 @@ At this point, we know that we need to create a connection between the URL and d
     }
     
 ### Step 4
-One solution to this problem is isolating the request in its own function, allowing the request to complete before the for loop begins its iterations. This structure overcomes the asynchronous qualities of Javascript, giving the user more control over the timing of processes.
+One solution to this problem is isolating the request in its own function, allowing the request to complete before the for loop can start iterating. This structure overcomes the asynchronous qualities of Javascript, giving the user more control over the timing of processes.
 
       function isolate(i) {
         request(urls[i], function(error, response, body){
@@ -77,4 +77,4 @@ One solution to this problem is isolating the request in its own function, allow
        }
        
 ### Success!
-After applying this solution, all .txt files were correctly created in destination directory, with each referencing a specfic url and its HTML body text!
+After applying this solution, all .txt files were correctly created in the target directory, with each referencing a specfic url's body text!
