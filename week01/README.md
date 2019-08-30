@@ -49,4 +49,16 @@ Create variables for both the URLs and directory destinations, using array and t
     ];
     
 ### Step 3
-Create a function that contains the request
+At this point, we know that we need to create a connection between the URL and directory variables, and we need to be able to iterate that process ten times, once to create each .txt file. One idea is to wrap the sample code framework in a for loop, which would theoretically assign each url request to its corresponding directory path and .txt file name. However, due to the asynchronus nature of Javascript, the for loop runs the iterations faster than the information can be requested, and thus, the code does not execute our task. 
+
+    for (var i=0; i<10; i++) {
+        request(urls[i], function(error, response, body){
+            if (!error && response.statusCode == 200) {
+                fs.writeFileSync(fns[i], body);
+            }
+        else {console.log("Request failed!")}
+        });
+    }
+    
+### Step 4
+One solution to this problem is isolating the request in its own function. This allows the request to execute before the for loop can begin iterating the information from the request.
