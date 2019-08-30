@@ -1,7 +1,7 @@
 # Week 1 Assignment
 ## First steps in parsing unstructured web data
 
-Through this assignment, students are opened up to the concept of data acquisiton, one of the first processes in creating a data visualization. In this case, our task is to create a Javascript code that extracts HTML body text from ten different AA websites, each covering a certain neighborhood in NYC. After the data is extracted, we are to write ten new .txt files that are labeled corresponding to the websites, and store them all in a new directory.  
+Through this assignment, students are opened up to the concept of data acquisiton, one of the first processes in creating a data visualization. In this case, our task is to create a Javascript code that extracts HTML body text from ten different AA websites, each covering a certain neighborhood in NYC. After the data is extracted, we are to write ten new .txt files that are labeled corresponding to each website, and then stored in a specific directory path.  
 
 ### Step 1
 We are given a starter code that correctly executes the task for a single, example website and directory. We now have to figure out how to write a function that iterates this ten times with our assigned data.
