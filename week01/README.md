@@ -61,4 +61,20 @@ At this point, we know that we need to create a connection between the URL and d
     }
     
 ### Step 4
-One solution to this problem is isolating the request in its own function. This allows the request to execute before the for loop can begin iterating the information from the request.
+One solution to this problem is isolating the request in its own function, allowing the request to complete before the for loop begins its iterations. This structure overcomes the asynchronous qualities of Javascript, giving the user more control over the timing of processes.
+
+      function isolate(i) {
+        request(urls[i], function(error, response, body){
+            if (!error && response.statusCode == 200) {
+                fs.writeFileSync(fns[i], body);
+            }
+        else {console.log("Request failed!")}
+        });
+       }
+       
+       for (var i=0; i<10; i++) {
+          isolate(i);
+       }
+       
+### Success!
+After applying this solution, all .txt files were correctly created in destination directory, with each referencing a specfic url and its HTML body text!
