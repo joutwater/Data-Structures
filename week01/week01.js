@@ -34,7 +34,7 @@ var fns = ['/home/ec2-user/environment/data/m01.txt',
 '/home/ec2-user/environment/data/m10.txt'
 ];
 
-// function isolating the request from the for loop (executed first)
+// function isolating the request from the for loop (request executed first)
 // (starting code had the request within the for loop, which did not work due to Javascripts asynchronus nature)
 
 function isolate(i) {
