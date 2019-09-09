@@ -18,6 +18,8 @@ $('table table table tr').each(function(i, elem) {
     if (i != 0){
         
         // these arguments remove the tags we don't need
+        var removeName = $(elem).find('h4').html()
+        $(elem).find('h4').remove()
         var removeName = $(elem).find('b').html()
         $(elem).find('b').remove()
         var removeDiv = $(elem).find('div').html()
@@ -34,7 +36,7 @@ $('table table table tr').each(function(i, elem) {
         // iterated function to find each address by its index by line and
         // adding it to a defined (blank as of now) text string
         address.forEach(function(item, index){
-            if (index === 1) formattedAddress += item
+            if (index === 0) formattedAddress += item
             else {
                 //process testing for five digits, finding the zipcode, and adding to a new variable
                 //add to formatted address with "new york, ny" in between
