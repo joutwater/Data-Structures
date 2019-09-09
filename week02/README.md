@@ -99,9 +99,6 @@ Once the list was compiled after multiple console.log checks and slight edits, t
          if (err) {
              return console.error(err);
          }
-     
-### Errors
-
-My final .txt file had a couple issues. There were a few instances where a NY NY and zipcode was added to items that I was not targeting through index===1, so somehow they are included in that index? Also the first line is undefined and I am not quite sure why. I will have to spend more time researching these issues, but this was the best I could do up until this point. Always learning!  
+      
 
 
