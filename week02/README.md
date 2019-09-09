@@ -35,7 +35,7 @@ We are given a starter code that extracts text from an example file and write to
     
 ### Step 2
 
-Start to replace the example data with the assignments data and find differences bewteen the two. At this point, we see that the html in our assignment is much less organized and will take specific tools to gather the addresses. One of the first issues is that the addresses are not within certain html tags, so the closest tag that can be targeted is the table row tag within three table tags (table, table, table, tr). Once that is found, we go into each tr tag and remove excess information like 'b', 'div', and 'span' tags. Now we have narrowed the window of our data to a more manageable size.
+Start to replace the example data with the assignments data and find differences bewteen the two. At this point, we see that the html in our assignment is much less organized and will take specific tools to gather the addresses. One of the first issues is that the addresses are not within certain html tags, so the closest tag that can be targeted is the table row tag within three table tags (table, table, table, tr). Once that is found, we go into each tr tag and remove excess information like 'h4', 'b', 'div', and 'span' tags. Now we have narrowed the window of our data to a more manageable size.
 
     var $ = cheerio.load(content);
 
@@ -69,7 +69,7 @@ Next, the goal is to clean up the remaining text to be more formatted. The varia
 
 ### Step 4
 
-Each group of addresses and associated information is broken up into a number of indices, and within each grouping index is an index for each line. The line index position for the address in each group is 1. Therefore, we are asking to find the index 1 item within each address group and add that to the formattedAddresses text string. Then, if the line index is not 1, look for five digits (zipcode), and when that is found, add that to a locations holder that also contains a text string of 'New York, NY'. This will all be added to the formattedAddresses variable that already contains the first part of the address.
+Each group of addresses and associated information is broken up into a number of indices, and within each grouping index is an index for each line. The line index position for the address in each group is 0. Therefore, we are asking to find the index 0 item within each address group and add that to the formattedAddresses text string. Then, if the line index is not 0, look for five digits (zipcode), and when that is found, add that to a locations holder that also contains a text string of 'New York, NY'. This will all be added to the formattedAddresses variable that already contains the first part of the address.
 
     address.forEach(function(item, index){
                 if (index === 0) formattedAddress += item
