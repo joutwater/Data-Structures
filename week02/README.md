@@ -46,6 +46,10 @@ Start to replace the example data with the assignments data and find differences
     if (i != 0){
         
         // these functions remove the tags we don't need
+        
+        var removeName = $(elem).find('h4').html()
+        $(elem).find('h4').remove()
+        
         var removeName = $(elem).find('b').html()
         $(elem).find('b').remove()
         
@@ -68,7 +72,7 @@ Next, the goal is to clean up the remaining text to be more formatted. The varia
 Each group of addresses and associated information is broken up into a number of indices, and within each grouping index is an index for each line. The line index position for the address in each group is 1. Therefore, we are asking to find the index 1 item within each address group and add that to the formattedAddresses text string. Then, if the line index is not 1, look for five digits (zipcode), and when that is found, add that to a locations holder that also contains a text string of 'New York, NY'. This will all be added to the formattedAddresses variable that already contains the first part of the address.
 
     address.forEach(function(item, index){
-                if (index === 1) formattedAddress += item
+                if (index === 0) formattedAddress += item
                 else {
                 
                     //process testing for five digits, finding the zipcode, and adding to a new variable
