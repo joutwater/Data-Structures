@@ -48,8 +48,10 @@ Start to replace the example data with the assignments data and find differences
         // these functions remove the tags we don't need
         var removeName = $(elem).find('b').html()
         $(elem).find('b').remove()
+        
         var removeDiv = $(elem).find('div').html()
         $(elem).find('div').remove()
+        
         var removeSpan = $(elem).find('span').html()
         $(elem).find('span').remove()
         
@@ -57,11 +59,43 @@ Start to replace the example data with the assignments data and find differences
 
 Next, the goal is to clean up the remaining text to be more formatted. The variable 'address' is created to remove all falsy information (.filter(Boolean)), whitespace(.trim), and indentations(.split). 'Children' and 'text' selects the parts of the untagged address line within the 'tr' tag. After this, a new variable called formattedAddress is created to hold the addresses and allow zipcode and NY NY to be spliced into a text string.
 
-        // defines a variable that will create more consolidated addresses, with children() used to highlight
-        // the untagged address line in the HTML body text. The other tools are used to remove aspects of the text
         var address = $(elem).children().text().split(/\n|,|\(|\)/).map(item => item.trim()).filter(Boolean);
-        // creating a variable with empty text string to be filled with the formatted addresses
+        
         var formattedAddress = ''
 
 ### Step 4
+
+Each group of addresses and associated information is broken up into a number of indices, and within each grouping index is an index for each line. The line index position for the address in each group is 1. Therefore, we are asking to find the index 1 item within each address group and add that to the formattedAddresses text string. Then, if the line index is not 1, look for five digits (zipcode), and when that is found, add that to a locations holder that also contains a text string of 'New York, NY'. This will all be added to the formattedAddresses variable that already contains the first part of the address.
+
+    address.forEach(function(item, index){
+                if (index === 1) formattedAddress += item
+                else {
+                
+                    //process testing for five digits, finding the zipcode, and adding to a new variable
+                    //add to formatted address with "new york, ny" in between
+                    const regex = /\d{5}/g
+                    const position = item.search(regex)
+                    
+                    // if position is found (not -1 (undefined))
+                        if (position !== -1){
+                            const zipCode = item.slice(position, position + 5)
+                            const locations = ', New York, NY ' + zipCode
+                
+                        formattedAddress += locations
+                }
+            }
+            
+        });
+
+### Step 5
+
+Once the list was compiled after multiple console.log checks and slight edits, the text was written to a new file called addresses. I used fs.writeFile instead of .writeFileSync because .writeFile's callback function creates delays that allow the preceeding code to be processed before writing the file.
+
+     fs.writeFile('../data/addresses.txt', formattedAddress + '\n', {'flag':'a'}, function(err){
+         if (err) {
+             return console.error(err);
+         }
+     
+### Conclusions
+
 
