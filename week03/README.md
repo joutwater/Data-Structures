@@ -17,7 +17,11 @@ My output addresses from last week contained an 'underfined' in the first line, 
 
 ### Step 2
 
-Below is the framework of the starter code with slight edits and extra comments added to the code. The first change I made (SEE //ONE) was altering the .txt import to be organized as an array in var addresses instead of copying and pasting each line of the text into an array manually [].
+Below is the framework of the starter code with slight edits and extra comments added. The first change I made (SEE //ONE) was altering the .txt import to be organized as an array in var addresses instead of copying and pasting each line of the text into an array manually [' ']. The next change to the starter code (SEE //TWO) was to edit the streetAddress value by creating a slice that would only include the first character up to the first comma (ex: '106 7th Avenue') from each meeting address. According to the API documentation, that was the preferred format for streetAddress. I also added a zipcode value, because I had already created zipcodes in the previous assignment. This value was created with a slice taking the last 5 characters from each address line. 
+
+There was not much to change in the request code, however, after viewing the output of the JSON file, I wanted to target the coordintes only and console.log them, just so I could see them on their own. I found that within tamuGeo and then within index '0' of the OutputGeocodes was another OutputGeocode that holds the latitude and longitude values. I will use the same path to the coordinate information later when isolating the coordinates into a final array.
+
+As a final note on the request and associated setTimeout, I edited the code there to allow time for each request and signify when to start the next step, writeCoords. When the number of entries in meetingsData equals the number of addresses in my input .txt, start writeCoords. If not, wait 2000 miliseconds and make the next api request. This will allow all requests to process and avoid any complication with asynchronicity.
 
      // dependencies
      var request = require('request'); // npm install request
@@ -31,8 +35,8 @@ Below is the framework of the starter code with slight edits and extra comments 
 
      //ONE --- creating a format from the .txt that can be organized as an array in var addresses
      //instead of copying and pasting each address in []
-
      var content = fs.readFileSync('../data/addresses1.txt').toString().split('\n');
+     
      //ONE --- geocode addresses
      var meetingsData = [];
      var addresses = content;
