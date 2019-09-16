@@ -71,3 +71,31 @@ As a final note on the request and associated setTimeout, I edited the code ther
         if(meetingsData.length === addresses.length) writeCoords();
         else callback ()
     }, 2000);
+    
+### Step 3
+
+After all of the reuqests were run and added to the meetingsData array, it was time to pick and choose the information needed for the final array. First, I created a new variable called 'data' to hold the final array and used meetingsData.map to pick and choose desired attributes from meetingsData (latitude and longitude). A sequence similar to what was used in the previously described console.log was used to isolate the coordinates and add them as an object to the 'data' array along with the matching input addresses from 'var address'.  
+
+     //THREE --- creating the final array with addresses and lat long objects - refer to the above code ^ 
+     function writeCoords() {
+         let data = meetingsData.map(dataConvert);
+
+     //THREE --- (had to place into function instead of within .map because of an otherwise unresolvable error)
+         // add the (var) addresses by index to the address obj in a new array,
+         // for the latLong object, take the index[0] from each 'OutputGeocode' 
+         // and within that, add the data from 'OutputGeocode.Latitude'
+         // Do the same for lng!
+     function dataConvert(obj, index){
+         return {address:addresses[index],
+         latLong:{lat:obj.OutputGeocodes[0].OutputGeocode.Latitude,
+         lng:obj.OutputGeocodes[0].OutputGeocode.Longitude}}
+         };
+         
+### Step 4
+
+          //FOUR --- write file . 'data now contains the final array for output, so that is targeted'
+              fs.writeFileSync('../data/first.json', JSON.stringify(data));
+              console.log('*** *** *** *** ***');
+              console.log('Number of meetings in this zone: ');
+              console.log(meetingsData.length);
+              }
