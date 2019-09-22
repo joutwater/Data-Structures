@@ -70,4 +70,4 @@ The final step is to query the database in order to check that the data in the n
     });
     
     
-![alt text]https://github.com/joutwater/Data-Structures/edit/master/week04/week04a_results.png
+![alt text](https://github.com/joutwater/Data-Structures/edit/master/week04/week04a_results.png)
