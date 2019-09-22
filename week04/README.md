@@ -55,3 +55,19 @@ Now that the table 'aalocations' is created, the .json file can be loaded to it.
     });
     
 ### Step 3
+
+The final step is to query the database in order to check that the data in the newly populated table exists as desired. The query and console.log returned my addresses and coordinate information!  
+
+    const client = new Client(db_credentials);
+    client.connect();
+
+    // Sample SQL statement to query the entire contents of a table: 
+    var thisQuery = "SELECT * FROM aalocations;";
+
+    client.query(thisQuery, (err, res) => {
+        console.log(err, res.rows);
+        client.end();
+    });
+    
+    
+    [alt text!] 
