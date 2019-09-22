@@ -39,3 +39,19 @@ After creating the database and matching personal credentials to appropriate ite
     
 ### Step 2
 
+Now that the table 'aalocations' is created, the .json file can be loaded to it. The code is similar to the previous cycle until after the db.credentials are deinfed. 'var addressesForDb' is created and this is where I will include the 'first.json' file from last week as the data used to populate the table. The async.eachSeries adds the values for each address and related coordinates to the table.  
+
+    var addressesForDb = require ("../data/first")
+
+    async.eachSeries(addressesForDb, function(value, callback) {
+        const client = new Client(db_credentials);
+        client.connect();
+        var thisQuery = "INSERT INTO aalocations VALUES (E'" + value.address + "', " + value.latLong.lat + ", " +        value.latLong.lng + ");";
+        client.query(thisQuery, (err, res) => {
+            console.log(err, res);
+            client.end();
+        });
+        setTimeout(callback, 1000); 
+    });
+    
+### Step 3
