@@ -9,6 +9,11 @@ Before documenting the coding assignment for the week, I will answer the few que
 2. When the data comes out of the database, I could see it being useful in a tabular form where clicking each category would unravel a list of values and/or sub categories. I think this would be a key aspect to good user experience when people use the interative map to search for meetings.
 
 3. I would describe my hierarchy as user-focused and intuitive. What are the first categories one thinks about when trying to find a meeting? I would say that is where, when, what? Then within each of those, what is the next variable of concern, and so forth.
+
+![alt text](https://github.com/joutwater/Data-Structures/blob/master/week04/week04_DB_sketch.png)
+
+
+
 ### Assignment
 
 Once again, this assignment builds on the previous week's assignment. Last week's goal was to create a .json file continaing an array of objects including input addresses and associated lat/long coordinates. This week, students will create an AWS database and add the .json file to the newly created database by creating a table in the database and then adding the information to the table.
