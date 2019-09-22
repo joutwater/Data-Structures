@@ -1,6 +1,11 @@
 # Week 4 Assignment
 ## Creating an AWS database and adding addresses
 
+### Part One: Plan
+Before documenting the coding assignment for the week, I will answer the few questions for PART ONE of the assignment. Amanda and I worked together in class to create a sketch that we think would best represent a good database for the AA project. It is important to logically categorize and nest data within realted categories, especially when presented with the challenge of organizing the AA data. The "where, when, and what" are used to intuitively set up the database structure, as those three categories represent the baseline information needed about a meeting. 
+
+### Assignment
+
 Once again, this assignment builds on the previous week's assignment. Last week's goal was to create a .json file continaing an array of objects including input addresses and associated lat/long coordinates. This week, students will create an AWS database and add the .json file to the newly created database by creating a table in the database and then adding the information to the table.
 
 I would also like to mention that this process takes three cycles of different code to be accomplished. There are common aspects between the codes but other aspects are replaced with new code in each cycle, targeting either table creation, .json input to table, and querying the database. My .js file for the assignment will show the querying cycle as active, with the table creation and address input code commented out.
@@ -70,4 +75,4 @@ The final step is to query the database in order to check that the data in the n
     });
     
     
-![alt text](https://github.com/joutwater/Data-Structures/edit/master/week04/week04a_results.png)
+![alt text](https://github.com/joutwater/Data-Structures/master/week04/week04a_results.png)
