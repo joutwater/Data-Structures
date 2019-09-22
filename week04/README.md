@@ -2,8 +2,13 @@
 ## Creating an AWS database and adding addresses
 
 ### Part One: Plan
-Before documenting the coding assignment for the week, I will answer the few questions for PART ONE of the assignment. Amanda and I worked together in class to create a sketch that we think would best represent a good database for the AA project. It is important to logically categorize and nest data within realted categories, especially when presented with the challenge of organizing the AA data. The "where, when, and what" are used to intuitively set up the database structure, as those three categories represent the baseline information needed about a meeting. 
+Before documenting the coding assignment for the week, I will answer the few questions for PART ONE of the assignment. Amanda and I worked together in class to create a sketch that we think would best represent a good database for the AA project. It is important to logically categorize and nest data within related categories, especially when presented with the challenge of organizing the AA data. The "where, when, and what" are used to intuitively set up the database structure, as those three categories represent the baseline information needed about a meeting. From there, more specific is attached to each.
 
+1. I think I would use a normalized data model for the AA data because I prefer to minimize redundancy and I think the level of format consistency in the data lends itself to a relational database with unique identifiers.
+
+2. When the data comes out of the database, I could see it being useful in a tabular form where clicking each category would unravel a list of values and/or sub categories. I think this would be a key aspect to good user experience when people use the interative map to search for meetings.
+
+3. I would describe my hierarchy as user-focused and intuitive. What are the first categories one thinks about when trying to find a meeting? I would say that is where, when, what? Then within each of those, what is the next variable of concern, and so forth.
 ### Assignment
 
 Once again, this assignment builds on the previous week's assignment. Last week's goal was to create a .json file continaing an array of objects including input addresses and associated lat/long coordinates. This week, students will create an AWS database and add the .json file to the newly created database by creating a table in the database and then adding the information to the table.
