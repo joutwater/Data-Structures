@@ -8,7 +8,7 @@ Before documenting the coding assignment for the week, I will answer the few que
 
 2. When the data comes out of the database, I could see it being useful in a tabular form where clicking each category would unravel a list of values and/or sub categories. I think this would be a key aspect to good user experience when people use the interative map to search for meetings.
 
-3. I would describe my hierarchy as representative of a map users thinking process. What are the first categories one thinks about when trying to find a meeting? I would say that is "where, when, what?". Then, within each of those, what is the next variable of concern, and so forth.
+3. I would describe my hierarchy as representative of a map-user's thinking process. What are the first categories one thinks about when trying to find a meeting? I would say that is "where, when, what?". Then, within each of those, what is the next variable of concern, and so forth.
 
 ![alt text](https://github.com/joutwater/Data-Structures/blob/master/week04/week04_DB_sketch.png)
 
