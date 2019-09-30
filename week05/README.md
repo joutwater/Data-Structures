@@ -83,7 +83,7 @@ The code below is adapted from the [starter code](https://github.com/visualizeda
 
 ### Part Three:
 
-After each of the three blogposts are added to the blog entry array, it is time to start adding them to the database. The aws-sdk dependancy is set up, AWS is configured, and a dynamo db variable is defined to accept the blog entries for the database. Async is used to loop through each blog post entry every half a second, adding to the var dynamodb variable after the 'params' are populated by the categories of each blog post.
+After each of the three blogposts are added to the blog entry array, it is time to start adding them to dynamo db. The aws-sdk dependancy is set up, AWS is configured, and a dynamo db variable is defined to accept the blog entries for the database. I was not having luck with the approach of 'for (let i=0; i<blogEntries.length; i++){' so I decided to use async like last week's project. This allowed the looping through each blog post entry every half a second, collecting the categories and values of each entry and putting the items to the dynamo db!
 
     //aws-sdk dependency and contacting amazon
     var AWS = require('aws-sdk'); //npm install aws-sdk
@@ -93,7 +93,7 @@ After each of the three blogposts are added to the blog entry array, it is time 
     //access dynamo
     var dynamodb = new AWS.DynamoDB();
 
-    //matching each blog entry item with the para needed for input to dynamo DB
+    //gathering items from each blog post entry for input to dynamo DB
     //and then send each entry to dynamo DB every half second (through putItem, then setTimeout:500) .
     
     async.eachSeries(blogEntries, function(entry, callback) {
@@ -109,3 +109,9 @@ After each of the three blogposts are added to the blog entry array, it is time 
 
             setTimeout(callback, 500)
     });
+
+### Success!
+
+The blog entries were appropriately entered to dynamo db!
+
+![alt text](https://github.com/joutwater/Data-Structures/blob/master/week05/data/week05_datastructures.png)
