@@ -21,7 +21,7 @@ The noSQL database created this week is quite different to the normalized databa
 
 ![alt text](https://github.com/joutwater/Data-Structures/blob/master/week05/data/week05_datastructures1.png)
 
-### Part two:
+### Part Two:
 
 The starter code provides a framework for creating new blog entries in an array, that is to be eventually added to a dynamo database that I created. The database was created following instructions offered by the instructor, who also included instructions on how to setup permissions allowing one's cloud 9 EC2 instance to connect with dynamo db. It is very important to establish this connection instead of using passwords or other private keys in the code that could mistakenly be uploaded to github.
 
@@ -80,3 +80,32 @@ The code below is adapted from the [starter code](https://github.com/visualizeda
         ));
 
     // console.log(blogEntries);
+
+### Part Three:
+
+After each of the three blogposts are added to the blog entry array, it is time to start adding them to the database. The aws-sdk dependancy is set up, AWS is configured, and a dynamo db variable is defined to accept the blog entries for the database. Async is used to loop through each blog post entry every half a second, adding to the var dynamodb variable after the 'params' are populated by the categories of each blog post.
+
+    //aws-sdk dependency and contacting amazon
+    var AWS = require('aws-sdk'); //npm install aws-sdk
+    AWS.config = new AWS.Config();
+    AWS.config.region = "us-east-1";
+
+    //access dynamo
+    var dynamodb = new AWS.DynamoDB();
+
+    //matching each blog entry item with the para needed for input to dynamo DB
+    //and then send each entry to dynamo DB every half second (through putItem, then setTimeout:500) .
+    
+    async.eachSeries(blogEntries, function(entry, callback) {
+
+            var params = {};
+            params.Item = entry; 
+            params.TableName = "processBlogJO";
+
+            dynamodb.putItem(params, function (err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
+                else     console.log(data);           // successful response
+            });
+
+            setTimeout(callback, 500)
+    });
