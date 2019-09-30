@@ -16,6 +16,6 @@ The noSQL database created this week is quite different to the normalized databa
                 }<br/>
   The data does not need to be in an elaborate table like other database outputs. As the example shows, I imagine the user only wanting relatively simple information through an easy search. To my understanding, these qualitites reflect the purpose of a noSQL database. 
   
-3. The hierarchy of the data is limited to the categrories of project, date, and everything else. I designed the database to group each post by project (partition key) and then by date (sort key) within each project. After project and date categories are defined, every other category has the same value in terms of hierarchy level.
+3. The hierarchy of the data is limited to the categrories of project and date. I designed the database to group each post by project (partition key) and then, within each post, the date (sort key) can be used as a secondary search value. So, the project value is the primary category for grouping while the date value doesn't necessarily group posts but is a sub-category by which a search request can be completed. After project and date categories are defined, every other category has the same value in terms of hierarchy level.
 
 ### Part two:
