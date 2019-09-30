@@ -19,6 +19,6 @@ The noSQL database created this week is quite different to the normalized databa
 3. The hierarchy of the data is limited to the categrories of project and date. I designed the database to group each post by project (partition key) and then, within each post, the date (sort key) can be used as a secondary search value. So, the project value is the primary category for grouping while the date value doesn't necessarily group posts but is a sub-category by which a search request can be completed. After project and date categories are defined, every other category has the same value in terms of hierarchy level.
 
 
-![alt text](https://github.com/joutwater/Data-Structures/blob/master/week04/week04_DB_sketch.png//)
+![alt text](https://github.com/joutwater/Data-Structures/blob/master/week05/week05_datastructures1.png)
 
 ### Part two:
