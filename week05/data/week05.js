@@ -4,7 +4,8 @@
       // empty array for blogEntries
       var blogEntries = [];
 
-      // creating new object within the class for each category, pass in that the objects have project, date, skills, etc. as properties
+      // creating new object within the class for each category, passing in that the objects have
+      // project, date, skills, etc. as properties
       class BlogEntry {
         constructor(project, date, skills, content, reflections) {
           this.project = {};
