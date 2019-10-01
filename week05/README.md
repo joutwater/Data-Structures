@@ -16,7 +16,7 @@ The noSQL database created this week is quite different to the normalized databa
                 }<br/>
   The data does not need to be in an elaborate table like SQL or other database outputs. As the example shows, I imagine the user only wanting relatively simple information through an easy search. To my understanding, these qualitites reflect the purpose of a noSQL database. 
   
-3. The hierarchy of the data is limited to the categrories of project and date. I designed the database to group each post by project (partition key) and then, within each post, the date (sort key) can be used as a secondary search value. So, the project value is the primary category for grouping while the date value doesn't necessarily group posts but is a sub-category by which a search request can be completed. After project and date categories are defined, every other category has the same value in terms of hierarchy level.
+3. The hierarchy of the data is limited to the categrories of project and date. I designed the database to group each post by project (partition key) and then, within each post, the date (sort key) shows chronological order and can be used as a secondary search value. So, the project value is the primary category for grouping while the date value is a sub-category for a second level of organization. Each entry has to have both a partition key and sort key. After project and date categories are defined, every other category has the same value in terms of hierarchy level (schemaless).
 
 
 ![alt text](https://github.com/joutwater/Data-Structures/blob/master/week05/data/week05_datastructures1.png)
@@ -83,7 +83,7 @@ The code below is adapted from the [starter code](https://github.com/visualizeda
 
 ### Part Three:
 
-After each of the three blogposts are added to the blog entry array, it is time to start adding them to dynamo db. The aws-sdk dependancy is set up, AWS is configured, and a dynamo db variable is defined to accept the blog entries for the database. I was not having luck with the approach of 'for (let i=0; i<blogEntries.length; i++){' so I decided to use async like last week's project. This allowed the looping through each blog post entry every half a second, collecting the categories and values of each entry and putting the items to the dynamo db!
+After each of the three blogposts are added to the 'blogEntries' array, it is time to start adding them to dynamo db. The aws-sdk dependancy is set up, AWS is configured, and a dynamo db variable is defined to accept the blog entries for the database. When tasked to loop over all the itmes in the 'blogEntries' array (so as not to put items in the table more than twice per second), my first few for loop attempts kept returning errors, so I decided to use async like last week's project. This allowed the looping through each blog post entry and it's items every half a second, collecting the categories and values of each entry, and putting the items in the dynamo db table!
 
     //aws-sdk dependency and contacting amazon
     var AWS = require('aws-sdk'); //npm install aws-sdk
