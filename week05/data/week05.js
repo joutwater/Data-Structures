@@ -58,8 +58,8 @@
       //access dynamo
       var dynamodb = new AWS.DynamoDB();
 
-      //matching each blog entry with the param format needed for input to dynamo DB
-      //and then send each entry to dynamo DB every half second (through putItem, then setTimeout:500) .
+      //gathering items from each blog post entry for input to dynamo DB
+      //then send each entry to dynamo DB (through put item). Repeat every half second (setTimeout:500) .
       async.eachSeries(blogEntries, function(entry, callback) {
 
               var params = {};
