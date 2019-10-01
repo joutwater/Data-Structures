@@ -94,7 +94,7 @@ After each of the three blogposts are added to the blog entry array, it is time 
     var dynamodb = new AWS.DynamoDB();
 
     //gathering items from each blog post entry for input to dynamo DB
-    //and then send each entry to dynamo DB every half second (through putItem, then setTimeout:500) .
+    //then send each entry to dynamo DB (through put item). Repeat every half second (setTimeout:500) .
     
     async.eachSeries(blogEntries, function(entry, callback) {
 
