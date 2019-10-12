@@ -35,6 +35,4 @@ See below for the code! Much of it was re-used from the code to create the datab
     });
     
 Result of the query:
-
-
-![alt text](https://github.com/joutwater/Data-Structures/blob/master/week04/week04_DB_sketch.png)
+![alt text](https://github.com/joutwater/Data-Structures/blob/master/week06/data/week06_SQL.png)
