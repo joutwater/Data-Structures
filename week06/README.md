@@ -36,3 +36,6 @@ See below for the code! Much of it was re-used from the code to create the datab
     
 Result of the query:
 ![alt text](https://github.com/joutwater/Data-Structures/blob/master/week06/data/week06_SQL.png)
+
+### Part Two: Progress Blog, DynamoDB (noSQL)
+The first part of this week's assignment is 
