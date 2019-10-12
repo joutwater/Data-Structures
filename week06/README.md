@@ -38,4 +38,4 @@ Result of the query:
 ![alt text](https://github.com/joutwater/Data-Structures/blob/master/week06/data/week06_SQL.png)
 
 ### Part Two: Progress Blog, DynamoDB (noSQL)
-The first part of this week's assignment is 
+The second part of this week's assignment was not as straight forward as the first part. My first step in this process was to restructure my date sort key to be some form of a number-based search (still as a string) as oppsoed to having to search by typing out an entire month (08 vs. August). So, I made some changes in my week 05 code first and established the new format in the dynamomdb table. Then I started to build my query. We were given started code that can be found here.
