@@ -12,7 +12,6 @@ const apiKey = process.env.TAMU_KEY;
 var content = fs.readFileSync('../data/json/parseAll.json');
 content = JSON.parse(content);
 
-
 // empty array for group of objects
 var geocodeData = [];
 
@@ -44,12 +43,14 @@ async.eachSeries(content, function(value, callback) {
            
             var coordinates = {};
             
+            // coordinates.address = tamuGeo['InputAddress'];
+            
             coordinates.latitude = tamuGeo['OutputGeocodes'][0]['OutputGeocode']['Latitude'];
             
             coordinates.longitude = tamuGeo['OutputGeocodes'][0]['OutputGeocode']['Longitude'];
             
-            // put coordinates object in value
-            value.coordinates = coordinates;
+            // put coordinates object in value inside location data under the name 'geoCode'
+            value.locationData["geoCode"] = coordinates;
             
             // push to empty array
             geocodeData.push(value);
