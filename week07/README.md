@@ -9,7 +9,7 @@ Before starting to play with code in this assignment, I spent a lot of time thin
 
 ### Part One: Parse
 
-Once I had an idea of how I wanted to organize my database, I was able to start making decisions about parsing my data in code. But, of course, even though I had a picture of how I wanted it to look, figuring out how to parse it that way took some time! I was stuck on my original code (for parsing solely addresses) for awhile until I realized I had basically to drop it and restructure with multiple objects, arrays, and a comprehensive json output. This took making objects for each future "table", looping through each table row within each zone file and pushing specific data to each. Within the meeting data, there was even a loop within the main loop to collect each meeting event as an object and place it in a nested array! ah! Please see code below: I will explain what I was able to clean and not fully clean after the code snippet...
+Once I had an idea of how I wanted to organize my database, I was able to start making decisions about parsing my data in code. But, of course, even though I had a picture of how I wanted it to look, figuring out how to parse it that way took some time! I was stuck on my original code (parsing solely addresses) for awhile until I realized I had basically to drop it and restructure with multiple objects, arrays, and a comprehensive json output. This took making objects for each future "table", looping through each table row within each zone file and pushing specific data to those objects. Within the meeting data, there was even a loop within the main loop to collect each meeting event as an object and place it in a nested array! ah! Please see code below: I will explain what I was able to clean and not fully clean after the code snippet...
 
     // dependencies fs and cheerio
 
@@ -53,7 +53,7 @@ Once I had an idea of how I wanted to organize my database, I was able to start 
         // load `content` into a cheerio object
         var $ = cheerio.load(content);
 
-        //find the content of concern which is nested in the tr of the third table tag. Used this in week02
+        //find the content of concern which is nested in each tr of the third table tag. Used this in week02
         $('table table table tr').each(function(i, elem) {
 
             // if the style tag has this exact style, we will look at the other elements in that tr
@@ -127,8 +127,10 @@ Once I had an idea of how I wanted to organize my database, I was able to start 
     
 ### Part One Reflections:
 
-Looking back I actually think I had a loop, within a loop, wihtin a loop. The outer loop was going through each zone file, the next loop was going through each table row in the zone file, and the final loop was going through each meeting event in each table row. I don't think that this was completely necessary but it helped triple check that I was in control of the asynchronicity. You can also see that I had a file counter so that it would know when it was finished and could start writing the json. This level of looping caused me issues later on when trying to access a certain of subset in my location data. I was getting errors because of the extra array of each zone. I eventually went in a removed that because I couldn't quite figure out how to get to what I needed in the JSON.
+It felt great to see a loop within a loop in action. The outer loop was going through each zone file, the next loop was going through each table row in the zone file, and the final loop was going through each meeting event in each table row. I don't think that this was completely necessary but it helped me understand the timing of everything by creating a parsing hierarchy of sorts. You can also see that I had a file counter so that it would know when it was finished and could start writing the json. This level of looping caused me issues later on when trying to access a certain of subset in my location data. I was getting errors because of the extra array of each zone. I eventually went in a removed the array manually because I couldn't quite figure out how to get to what I needed in the JSON.
 
-In terms of the data cleanliness at this point, it isn't perfect but it I feel that it is reasonably accurate given my abilties as a new coder. There were some inconsistencies in location data that I went through and corrected in find/replace, but I know there are probably some errors still in the JSON. Moving forward!
+In terms of the data cleanliness at this point, it isn't perfect but I feel that it is reasonably accurate given my abilties as a new coder. There were some inconsistencies in location data that I went through and corrected in find/replace, but I know there are probably some errors still in the JSON. Moving forward!
 
 ### Part Two : Geocoding
+
+The next step in the process was to create coordinates from each street address, city, state, and zip that was parsed from the previous step. We had some starter code that helped organize our dependencies and the correct way to send requests to the API, but now the challenge was to pass the address information (nested in the JSON) to the 
