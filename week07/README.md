@@ -133,4 +133,79 @@ In terms of the data cleanliness at this point, it isn't perfect but I feel that
 
 ### Part Two : Geocoding
 
-The next step in the process was to create coordinates from each street address, city, state, and zip that was parsed from the previous step. We had some starter code that helped organize our dependencies and the correct way to send requests to the API, but now the challenge was to pass the address information (nested in the JSON) to the 
+The next step in the process was to create coordinates from each street address, city, state, and zip that was parsed from the previous step. We had some starter code that helped organize our dependencies and the correct way to send requests to the API, but now the challenge was to pass the address information (nested in the JSON) to criteria that is used to create the coordinates. This was a matter of creating a system of dot notation to access the properties within the objects. Even though I had the right concept for this, I was getting errors from the previously mentioned issue of an extra array surrounding the zones which I couldn't figure out how to get through with dot notation. Another issue was that I somehow accidentally an & sign for the zipcode search syntax and i kept receiving the same coordinates for each address. That took awhile to figure out because it was part of the starter code and I was looking everywhere else for the error. Then, the next challenge was to nest the coordinates back in the location data object. I did this by using the dot notation again and creating a placeholder in the location data that was to store the coordinates. I'm glad that I didn't run out of requests for this because I had to run the full list of addresses twice in order to see the structure that I wanted. Please see code below:
+
+
+        // dependencies
+        var request = require('request'); // npm install request
+        var async = require('async'); // npm install async
+        var fs = require('fs');
+        const dotenv = require('dotenv'); // npm install dotenv
+
+        // TAMU api key
+        dotenv.config();
+        const apiKey = process.env.TAMU_KEY;
+
+        // loading and parsing the json
+        var content = fs.readFileSync('../data/json/parseAll.json');
+        content = JSON.parse(content);
+
+        // empty array for group of objects
+        var geocodeData = [];
+
+        // eachSeries in the async module iterates over an array and operates on each item in the array in series
+        async.eachSeries(content, function(value, callback) {
+
+            var address = value.locationData.streetAddress;
+
+            var apiRequest = 'https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx?';
+
+            // splitting address at each space and rejoining with %20 which is format for api
+            apiRequest += 'streetAddress=' + address.split(' ').join('%20');
+
+            var zipCode = value.locationData.zipCode;
+
+            apiRequest += '&zip=' + zipCode;
+
+            apiRequest += '&city=New%20York&state=NY&apikey=' + apiKey;
+
+            apiRequest += '&format=json&version=4.01';
+
+            // send api requests and checking for errors, if not continue to parse and create the coordinates in an object
+            request(apiRequest, function(err, resp, body) {
+                if (err) {throw err;}
+                else {
+                    var tamuGeo = JSON.parse(body);
+
+                    // console.log(tamuGeo.OutputGeocodes[0].OutputGeocode.Latitude, tamuGeo.OutputGeocodes[0].OutputGeocode.Longitude);
+
+                    var coordinates = {};
+
+                    // coordinates.address = tamuGeo['InputAddress'];
+
+                    coordinates.latitude = tamuGeo['OutputGeocodes'][0]['OutputGeocode']['Latitude'];
+
+                    coordinates.longitude = tamuGeo['OutputGeocodes'][0]['OutputGeocode']['Longitude'];
+
+                    // put coordinates object in value inside location data under the name 'geoCode'
+                    value.locationData["geoCode"] = coordinates;
+
+                    // push to empty array
+                    geocodeData.push(value);
+
+                }
+
+            });
+
+            // wait before callback for another api request
+            setTimeout(callback, 2000);
+
+            }, function() { 
+                fs.writeFileSync('../data/json/geoCoded.json', JSON.stringify(geocodeData, null, 2));
+                console.log('*** *** *** *** ***');
+                console.log('Number of meetings: ');
+                console.log(geocodeData.length);
+
+          });
+
+### Part Two Reflections:
