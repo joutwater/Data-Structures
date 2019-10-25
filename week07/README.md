@@ -9,7 +9,7 @@ Before starting to play with code in this assignment, I spent a lot of time thin
 
 ### Part One: Parse
 
-Once I had an idea of how I wanted to organize my database, I was able to start making decisions about parsing my data in code. But, of course, even though I had a picture of how I wanted it to look, figuring out how to parse it that way took some time! I was stuck on my original code (parsing solely addresses) for awhile until I realized I had basically to drop it and restructure with multiple objects, arrays, and a comprehensive json output. This took making objects for each future "table", looping through each table row within each zone file and pushing specific data to those objects. Within the meeting data, there was even a loop within the main loop to collect each meeting event as an object and place it in a nested array! ah! Please see code below: I will explain what I was able to clean and not fully clean after the code snippet...
+Once I had an idea of how I wanted to organize my database, I was able to start making decisions about parsing my data in code. But, of course, even though I had a picture of how I wanted it to look, figuring out how to parse it that way took some time! I was stuck on my original code (parsing solely addresses) for awhile until I realized I basically had to drop it and restructure with multiple objects, arrays, and a comprehensive json output. This took making objects for each future "table", looping through each table row within each zone file and pushing specific data to those objects. Within the meeting data, there was even a loop within the main loop to collect each meeting event as an object and place it in a nested array! ah! Please see code below: I will explain what I was able to clean and not fully clean after the code snippet...
 
     // dependencies fs and cheerio
 
@@ -133,7 +133,7 @@ In terms of the data cleanliness at this point, it isn't perfect but I feel that
 
 ### Part Two : Geocoding
 
-The next step in the process was to create coordinates from each street address, city, state, and zip that was parsed from the previous step. We had some starter code that helped organize our dependencies and the correct way to send requests to the API, but now the challenge was to pass the address information (nested in the JSON) to criteria that is used to create the coordinates. This was a matter of creating a system of dot notation to access the properties within the objects. Then, the next challenge was to nest the coordinates back in the location data object. I did this by using the dot notation again and creating a placeholder in the location data that was to store the coordinates. I'm glad that I didn't run out of requests for this because I had to run the full list of addresses twice in order to see the structure that I wanted. Please see code below:
+The next step in the process was to create coordinates from each street address, city, state, and zip that was parsed from the previous step. We had some starter code that helped organize our dependencies and the correct way to send requests to the API, but now the challenge was to pass the address information (nested in the JSON) to criteria that is used to create the coordinates. This was a matter of creating a system of dot notation to access the properties within the objects. Then, the next challenge was to nest the coordinates back in the location data object. Neil helped me figure this out and showed me how to use the dot notation again and create a placeholder in the location data that was to store the coordinates. I'm glad that I didn't run out of requests for this because I had to run the full list of addresses twice in order to see the structure that I wanted. Please see code below:
 
 
         // dependencies
@@ -212,6 +212,77 @@ The next step in the process was to create coordinates from each street address,
 
 My first attempts using dot notation to access the address information was giving me errors. This was from the previously mentioned issue of an extra array surrounding the zones which I couldn't figure out how to get through with the dot notation. I had to remove those array brackets manually from each zone, but then it worked! Another issue was that I somehow accidentally removed an & for the zipcode search syntax and I kept receiving the same coordinates for each address. That took awhile to figure out because it was part of the starter code and I was looking everywhere else for the error.
 
-### Part Three : Input to SQL table
+### Part Three : Deleting old table and creation of three tables in SQL
 
-The first step in this process was to drop the existing data from the aalocations data so I had a clean slate when inputting my three tables (hopefully correctly!).
+The first step in this process was to drop (delete) the existing aalocations table so I had a clean slate when creating and populating my three tables (hopefully correctly!). I then created the three tables that would be holding my location, group, and meeting data. I had to do some thinking around naming each column and organizing the primary keys and foreign keys.
+
+
+    //dependencies
+    const dotenv = require('dotenv');
+    const async = require ("async"); 
+    const { Client } = require('pg');
+
+    dotenv.config();
+
+    // AWS RDS POSTGRESQL INSTANCE
+    var db_credentials = new Object();
+    db_credentials.user = 'jcoutwater';
+    db_credentials.host = 'database-structures-1.chulj8yx5mea.us-east-1.rds.amazonaws.com';
+    db_credentials.database = 'aa';
+    db_credentials.password = process.env.AWSRDS_PW;
+    db_credentials.port = 5432;
+
+
+
+    //STEP 1
+
+    //Connect to the AWS RDS Postgres database
+    // const client = new Client(db_credentials);
+    // client.connect();
+
+    // Sample SQL statement to delete a table: 
+    // var thisQuery = "DROP TABLE aalocations;"; 
+
+    //STEP 2
+
+    // Sample SQL statement to create a table for locations:
+    // var thisQuery = [];
+
+        // thisQuery += "CREATE TABLE locations (location_ID serial primary key,\
+        //                                             zone varchar(3),\
+        //                                             street_address varchar(200),\
+        //                                             location_name varchar(200),\
+        //                                             city varchar(10),\
+        //                                             state varchar(5),\
+        //                                             zipcode varchar(5),\
+        //                                             raw_directions varchar(200),\
+        //                                             loc_details varchar(300),\
+        //                                             wheelchair_access varchar(10),\
+        //                                             latitude double precision,\
+        //                                             longitude double precision);";
+
+        // Sample SQL statement to create a table for groups: 
+        // thisQuery += "CREATE TABLE groups (group_ID serial primary key,\
+        //                                       group_name varchar(200));";
+
+        // Sample SQL statement to create a table for meetings: 
+        // thisQuery += "CREATE TABLE meetings (location_ID int references locations(location_ID),\
+        //                                      group_ID int references groups(group_ID),\
+        //                                      day varchar(100),\
+        //                                      start_time time,\
+        //                                      start_AMPM varchar(5),\
+        //                                      end_time time,\
+        //                                      end_AMPM varchar(5),\
+        //                                      meeting_type varchar(10),\
+        //                                      meeting_desc varchar(200));";
+
+
+        // client.query(thisQuery, (err, res) => {
+        //     console.log(err, res);
+        //     client.end();
+        // });
+        
+        
+### Part Three Reflections:
+
+The syntax was challenging for some of these table columns, especially those with different value types...
