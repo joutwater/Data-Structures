@@ -285,4 +285,6 @@ The first step in this process was to drop (delete) the existing aalocations tab
         
 ### Part Three Reflections:
 
-The syntax was challenging for some of these table columns, especially those with different value types...
+The syntax was challenging for some of these table columns, especially those with different value types. I found myself getting errors for small things like commas and not closing parenthesis, but there are no notifications of those errors like there would be in regular javascript code. The hardest syntax to figure out was that of the primary key, and then connecting that value to the foreign key in another table. I had some help from classmates to work that out.
+
+## Part Four : Populating SQL tables
