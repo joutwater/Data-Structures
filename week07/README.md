@@ -440,4 +440,4 @@ When the data was successfully populated in the aameetings table, a query was cr
         client.end();
     });
     
-   
+![alt text](https://github.com/joutwater/Data-Structures/blob/master/week07/data/week07_query_evidence.png)   
