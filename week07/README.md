@@ -242,6 +242,11 @@ The first step in this process was to drop (delete) the existing aalocations tab
 
     // Sample SQL statement to delete a table: 
     // var thisQuery = "DROP TABLE aalocations;"; 
+    
+     // client.query(thisQuery, (err, res) => {
+        //     console.log(err, res);
+        //     client.end();
+        // });
 
     //STEP 2
 
@@ -292,7 +297,7 @@ The syntax was challenging for some of these table columns, especially those wit
 ---------------------
 ## BREAK
 
-Unfortunately, at this point in the process, I was not able to figure out how to create the relational database and primary keys pairs foregin keys how I wanted. I spent a lot of time trying to figure it out, and even though there were a few classmates that had done this and graciously shared their code with me, I did not understand it well enough to confidently use it and be able to describe the process. Therefore, I decided to create one table that includes all of the data I have been parsing and geocoding. If I am able to grasp the concept and code of the relational system in SQL, I will hopefully be able to create my initial plans. 
+Unfortunately, at this point in the process, I was not able to figure out how to create the relational database and primary key / foregin key pairs how I wanted. I spent a lot of time trying to figure it out, and even though there was a classmate that had done this and graciously shared their code with me, I did not understand it well enough to confidently use it and be able to describe the process. Therefore, I decided to create one table that includes all of the data I have been parsing and geocoding. If I am able to grasp the concept and code of the relational system in SQL, I will hopefully be able to create my initial plans. 
 
 ### Part Five (A) : Clearing and creating new table
 
