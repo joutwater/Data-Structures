@@ -288,3 +288,156 @@ The first step in this process was to drop (delete) the existing aalocations tab
 The syntax was challenging for some of these table columns, especially those with different value types. I found myself getting errors for small things like commas and not closing parenthesis, but there are no notifications of those errors like there would be in regular javascript code. The hardest syntax to figure out was that of the primary key, and then connecting that value to the foreign key in another table. I had some help from classmates to work that out.
 
 ### Part Four : Populating SQL tables
+
+---------------------
+## BREAK
+
+Unfortunately, at this point in the process, I was not able to figure out how to create the relational database and primary keys pairs foregin keys how I wanted. I spent a lot of time trying to figure it out, and even though there were a few classmates that had done this and graciously shared their code with me, I did not understand it well enough to confidently use it and be able to describe the process. Therefore, I decided to create one table that includes all of the data I have been parsing and geocoding. If I am able to grasp the concept and code of the relational system in SQL, I will hopefully be able to create my initial plans. 
+
+### Part Five (A) : Clearing and creating new table
+
+I went back and dropped the location, group, and meeting tables and then added the an aaMeetings table that will hold all of my categories and values.
+
+
+Drop table:
+
+    //dependencies
+    const dotenv = require('dotenv');
+    const async = require ("async"); 
+    const { Client } = require('pg');
+    const fs = require('fs');
+
+    dotenv.config();
+
+    // AWS RDS POSTGRESQL INSTANCE
+    var db_credentials = new Object();
+    db_credentials.user = 'jcoutwater';
+    db_credentials.host = 'database-structures-1.chulj8yx5mea.us-east-1.rds.amazonaws.com';
+    db_credentials.database = 'aa';
+    db_credentials.password = process.env.AWSRDS_PW;
+    db_credentials.port = 5432;
+
+
+
+    //STEP 1
+
+    // Connect to the AWS RDS Postgres database
+    const client = new Client(db_credentials);
+    client.connect();
+
+    // Sample SQL statement to delete a table: 
+    var thisQuery = "DROP TABLE locations;";
+    // also groups and meetings...
+
+        client.query(thisQuery, (err, res) => {
+            console.log(err, res);
+            client.end();
+        });
+        
+Create table:
+
+    // Connect to the AWS RDS Postgres database
+    const client = new Client(db_credentials);
+    client.connect();
+
+    // Sample SQL statement to create a table for aaMeetings:
+    var thisQuery = [];
+
+        thisQuery += "CREATE TABLE aaMeetings (     location_name varchar(200),\
+                                                    zone varchar(3),\
+                                                    street_address varchar(200),\
+                                                    city varchar(10),\
+                                                    state varchar(5),\
+                                                    zipcode varchar(5),\
+                                                    raw_directions varchar(200),\
+                                                    loc_details varchar(300),\
+                                                    wheelchair_access varchar(10),\
+                                                    latitude double precision,\
+                                                    longitude double precision,\
+                                                    group_name varchar(200),\
+                                                    meeting_day varchar(100),\
+                                                    meeting_start time,\
+                                                    start_AMPM varchar(5),\
+                                                    meeting_end time,\
+                                                    end_AMPM varchar(5),\
+                                                    meeting_type varchar(10),\
+                                                    meeting_desc varchar(200));";
+
+
+        client.query(thisQuery, (err, res) => {
+            console.log(err, res);
+            client.end();
+        });
+
+
+### Part Five (B) : Populating table
+
+After the table was successfully created, I made a code to insert all of the data from the JSON file into its respetive category name in a new table. It is a long list but it has everything! I used the starter code from week04 to recall some of the sytax around this process. Additionally, because there is a meetings array holding the multiple events and times, a loop within a loop was created to extract data for each meeting and keep it associated with its respective location and group data.
+
+
+    var aaMeetingsForDb = fs.readFileSync("../data/json/geoCoded.json");
+
+    aaMeetingsForDb = JSON.parse(aaMeetingsForDb);
+
+    //creating a way to access each meeting event within the array, in each instance of an "table row" object
+    async.eachSeries(aaMeetingsForDb, function(value, callback1) {
+        //value is object with locationData, groupData, and the meetingData array
+
+        async.eachSeries(value.meetingData, function(meeting, callback2) {
+            //meeting is object with day, startTime, etc.
+            //inner loop still has access to value and its location/group data
+
+              //connect to db
+              const client = new Client(db_credentials);
+              client.connect();
+
+              var thisQuery = "INSERT INTO aaMeetings VALUES ('" + value.locationData.locationName + "',\
+                                                              '" + value.locationData.zone + "',\
+                                                              '" + value.locationData.streetAddress + "',\
+                                                              '" + value.locationData.city + "',\
+                                                              '" + value.locationData.state + "',\
+                                                              '" + value.locationData.zipCode + "',\
+                                                              '" + value.locationData.rawDirections + "',\
+                                                              '" + value.locationData.locDetails + "',\
+                                                              '" + value.locationData.wheelChairAccess + "',\
+                                                              '" + value.locationData.geoCode.latitude + "',\
+                                                              '" + value.locationData.geoCode.longitude + "',\
+                                                              '" + value.groupData.groupName +"',\
+                                                              '" + meeting.day + "',\
+                                                              '" + meeting.startTime + "',\
+                                                              '" + meeting.startAMPM + "',\
+                                                              '" + meeting.endTime + "',\
+                                                              '" + meeting.endAMPM + "',\
+                                                              '" + meeting.meetingType + "',\
+                                                              '" + meeting.meetingTypeLong + "');";
+              client.query(thisQuery, (err, res) => {
+            console.log(err, res);
+            client.end();
+        });
+
+         //end inner loop
+         setTimeout(callback2, 1000);
+      });
+
+        //end outer loop
+        setTimeout(callback1, 1000);
+    });
+
+        
+### Part Five (C) : Querying from the table
+
+When the data was successfully populated in the aameetings table, a query was created to check the data! I searched for each group name in the table. In this process and another looking at location queries, I could see that were repetitive names and other redudant information, but the table should still function properly! The query ran very quickly. See a screenshot of the query below the code.
+
+
+    const client = new Client(db_credentials);
+    client.connect();
+
+    // Sample SQL statement to query the groups names from the table: 
+    var thisQuery = "SELECT group_name FROM aaMeetings;";
+
+    client.query(thisQuery, (err, res) => {
+        console.log(err, res.rows);
+        client.end();
+    });
+    
+   
