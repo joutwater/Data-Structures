@@ -82,7 +82,7 @@ var getAndWriteData = function() {
     });
 };
 
-// console.log(parseJson);
+console.log(data);
 
 
 // write a new row of sensor data every five minutes
