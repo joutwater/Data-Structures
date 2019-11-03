@@ -142,3 +142,5 @@ After running mulitple checks and having to drop and recreate tables multiple ti
 
 ### Part Four: Reflections
 
+I have run into an issue of trying to adapt code too literally from past exercises. Each challenege is a new situation with different variables, so I need to remind myself of that fact and be more mindful in my approach to a new code. Also, this weeks assignment was different from previous assignments in that there was no loop needed in the code. It is just one request at a time. Even though it sounds more simple, it took me a moment to figure out and understand the approach to a "less complicated" procedure because I hadn't encountered it before. I was looking for a place to add an async or forloop but it wasn't there!
+
