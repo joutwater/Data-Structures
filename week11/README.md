@@ -5,4 +5,4 @@ In this week's [assignment](https://github.com/visualizedata/data-structures/blo
 
 ### Part One: Sensor Data
 
-[alt_text!]
+![alt text](https://github.com/joutwater/Data-Structures/blob/master/week06/data/week06_SQL.png)
