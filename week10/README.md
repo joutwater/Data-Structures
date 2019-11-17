@@ -1,5 +1,6 @@
 # Week 10 Assignment
 ## Creating an endpoint for three different databases
+URL: http://54.235.234.244:8080/
 
 In this week's [assignment](https://github.com/visualizedata/data-structures/tree/master/weekly_assignment_10), students are tasked with getting the final interfaces one step closer by creating an endpoint for the AA Meetings, Sensor Data, and Process Blog databases. The specific queries I've used in the endpoint show some of the data that I plan to inlcude in each of the interfaces.
 
