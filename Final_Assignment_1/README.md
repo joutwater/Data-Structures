@@ -2,6 +2,8 @@
 
 URL for site: http://54.235.234.244:8080/aadata
 
+(Please see lines 38-163 of app.js for template structure, javascript, and SQL code)
+
 ### Project description
 This project is the culmination of weekly assignments throughout this course that involved Alcoholics anonymous data sourced from the htmls of multiple AA websites. We have found multiple categories and iterated through multiple data structures in the process. In case you would like more context for this project, please see these pages:
 
