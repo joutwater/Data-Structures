@@ -4,12 +4,18 @@
 This project is the culmination of weekly assignments throughout this course that involved Alcoholics anonymous data sourced from the htmls of multiple AA websites. We have found multiple categories and iterated through multiple data structures in the process. In case you would like more context for this project, please see these pages:
 
 Scraping: [week 1](https://github.com/joutwater/Data-Structures/tree/master/week01)
-Parsing: week 2
-Geocode: week 3
-PopulatingSql database: week 4
-Querying from database: week 6
-Complete AA data to database: week 7
-Creating endpoint for databases: week 10
+
+Parsing: [week 2](https://github.com/joutwater/Data-Structures/tree/master/week02)
+
+Geocode: [week 3](https://github.com/joutwater/Data-Structures/tree/master/week03)
+
+PopulatingSql database: [week 4](https://github.com/joutwater/Data-Structures/tree/master/week04)
+
+Querying from database: [week 6](https://github.com/joutwater/Data-Structures/tree/master/week06)
+
+Complete AA data to database: [week 7](https://github.com/joutwater/Data-Structures/tree/master/week07)
+
+Creating endpoint for databases: [week 10](https://github.com/joutwater/Data-Structures/tree/master/week10)
 
 ### Process
 In this assignment, students are asked to make a webapp that geographically displays AA data and various categories of that data. For my specific project, I decided to create a service that would be used by alcoholics in a potential emergency situation, when a user really needs to go to an AA meeting. This site would be a way for users to see all AA meetings within two hours of the current time. I feel that range is sufficient in giving users a decent range of time to allow them to get to a meeting but not too much time where they think it would be too long from the current time. Of course, the time and location is the most important information for each meeting in this situation, so these are used in the database query to dynamically populate markers on the map depending on when you enter the site (every time you refresh the page, the time will update). Each marker is a meeting location and it will host information like meeting type, group name, and other information that would give a user at least some context for mental preparation before a meeting, if needed. I think it could be helpful to have some of this information, but the location and time will be the categories of most concern. Because I am only querying a small subset of the total meetings, the extra information should not slow down the UX.
