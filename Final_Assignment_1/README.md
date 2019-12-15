@@ -3,7 +3,7 @@
 ### Project description
 This project is the culmination of weekly assignments throughout this course that involved Alcoholics anonymous data sourced from the htmls of multiple AA websites. We have found multiple categories and iterated through multiple data structures in the process. In case you would like more context for this project, please see these pages:
 
-Scraping: week 1
+Scraping: ![week 1](https://github.com/joutwater/Data-Structures/tree/master/week01)
 Parsing: week 2
 Geocode: week 3
 PopulatingSql database: week 4
