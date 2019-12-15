@@ -24,31 +24,31 @@ In this assignment, students are asked to make a webapp that geographically disp
 
 The query I used in SQL gets all meeting start times between the current time and two hours from the current time. The main challenge with this query is that I used moment.js to give me current time, but that time format is in 24 hour time vs. the meeting times which use the 12 hour clock system. I had to create a system for changing from AM to PM based on the 24 hour clock. For example, if it is 11:15am, I have to find meetings from that time up until 11:59:59am  and then activate another query to find all meetings from 12:00:00 pm to 1:15 pm. I created “if” statements in the query for the time range from 10am to 12pm and 10pm to midnight, which are the two ranges where this issue comes up. Please see the query below:
 
-// FINAL query: This query attempts to solve the issue of finding time two hours from now when the time is between 10 and 12 and 22 and 24.
-// The parsed data is in the 12 hour clock system so I had to tell it to query meetings under certain conditions.
-if (hourNumber >= 10 && hourNumber <= 12){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
-                 FROM aaMeetings
-                 WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
-                 AND (meeting_day = '` + dayString + "' and meeting_start < '" + '11:59:00' + "' and start_AMPM = '" + nowAMPM +`')
-                 OR (meeting_day = '` + dayString + "' and meeting_start >= '" + '00:00:00' + "' and start_AMPM = '" + twoNowAMPM +`')
-                 AND (meeting_day = '` + dayString + "' and meeting_start <= '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
-                 GROUP BY latitude, longitude;`;
-                 
-} else if (hourNumber >= 22 && hourNumber <= 24){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
-                 FROM aaMeetings
-                 WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
-                 AND (meeting_day = '` + dayString + "' and meeting_start < '" + '23:59:59' + "' and start_AMPM = '" + nowAMPM +`')
-                 OR (meeting_day = '` + dayStringPlus + "' and meeting_start >= '" + '00:00:00' + "' and start_AMPM = '" + twoNowAMPM +`')
-                 AND (meeting_day = '` + dayStringPlus + "' and meeting_start <= '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
-                 GROUP BY latitude, longitude;`;
-    
-} else {var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
-                 FROM aaMeetings
-                 WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
-                 AND (meeting_day = '` + dayString + "' and meeting_start < '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
-                 GROUP BY latitude, longitude;`;
-    
-}
+    // FINAL query: This query attempts to solve the issue of finding time two hours from now when the time is between 10 and 12 and 22 and 24.
+    // The parsed data is in the 12 hour clock system so I had to tell it to query meetings under certain conditions.
+    if (hourNumber >= 10 && hourNumber <= 12){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
+                     FROM aaMeetings
+                     WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
+                     AND (meeting_day = '` + dayString + "' and meeting_start < '" + '11:59:00' + "' and start_AMPM = '" + nowAMPM +`')
+                     OR (meeting_day = '` + dayString + "' and meeting_start >= '" + '00:00:00' + "' and start_AMPM = '" + twoNowAMPM +`')
+                     AND (meeting_day = '` + dayString + "' and meeting_start <= '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
+                     GROUP BY latitude, longitude;`;
+
+    } else if (hourNumber >= 22 && hourNumber <= 24){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
+                     FROM aaMeetings
+                     WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
+                     AND (meeting_day = '` + dayString + "' and meeting_start < '" + '23:59:59' + "' and start_AMPM = '" + nowAMPM +`')
+                     OR (meeting_day = '` + dayStringPlus + "' and meeting_start >= '" + '00:00:00' + "' and start_AMPM = '" + twoNowAMPM +`')
+                     AND (meeting_day = '` + dayStringPlus + "' and meeting_start <= '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
+                     GROUP BY latitude, longitude;`;
+
+    } else {var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
+                     FROM aaMeetings
+                     WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
+                     AND (meeting_day = '` + dayString + "' and meeting_start < '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
+                     GROUP BY latitude, longitude;`;
+
+    }
 
 
 #### Reflections and room for improvement:
