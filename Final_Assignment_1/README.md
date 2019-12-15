@@ -11,7 +11,7 @@ Parsing: [week 2](https://github.com/joutwater/Data-Structures/tree/master/week0
 
 Geocode: [week 3](https://github.com/joutwater/Data-Structures/tree/master/week03)
 
-PopulatingSql database: [week 4](https://github.com/joutwater/Data-Structures/tree/master/week04)
+Populating SQL database: [week 4](https://github.com/joutwater/Data-Structures/tree/master/week04)
 
 Querying from database: [week 6](https://github.com/joutwater/Data-Structures/tree/master/week06)
 
