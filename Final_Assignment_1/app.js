@@ -30,11 +30,12 @@ var AWS = require('aws-sdk');
     db_credentials_1.database = 'cook';
     db_credentials_1.password = process.env.AWSRDS_PW;
     db_credentials_1.port = 5432;
-    
+
+//handlebars for tempsensor    
 const indexSource = fs.readFileSync("templates/sensor.html").toString();
 var template = handlebars.compile(indexSource, { strict: true });
     
-    // create templates
+// create templates for AA map
 var hx = `<!doctype html>
 <html lang="en">
 <head>
@@ -80,28 +81,30 @@ app.get('/', function(req, res) {
   <ul>
   <li> <a href="/aadata">aa data</a> </li>
   <li> <a href="/sensordata">sensor data</a> </li>
-  <li> <a href="/process">process blog</a> </li>
+  <li> <a href="./blog.html">process blog</a> </li>
   </ul>`);
 });
 
+//getting aadata
 app.get('/aadata', function(req, res) {
-    
+
+//variables to be used in the AA sql query
+//querying by meetings by current day with start times between current time and two hours from current time
 var now = moment.tz(Date.now(), "America/New_York");
 var dayNumber = now.day().toString();
 var dayString = now.day(dayNumber).format("dddd");
 var dayStringPlus = now.day(dayNumber).add(1).format("dddd");
-
 if (dayNumber = 6){
     dayStringPlus = 'Sunday' 
 };
+
 var hourNumber = now.hour().toString();
-// var hourNumber = 8;
+//var hourNumber = 23
 var hourFormatted = now.hour(hourNumber).format("hh:mm:ss A");
 var nowTime = hourFormatted.slice(0,-3);
 var nowAMPM = hourFormatted.slice(-2);
 
 var twoHourFormatted = now.hour(hourNumber).add(2,"h").format("hh:mm:ss A");
-
 var twoNowTime = twoHourFormatted.slice(0,-3);
 var twoNowAMPM = twoHourFormatted.slice(-2);
 
@@ -114,21 +117,21 @@ const client1 = new Pool (db_credentials);
 //                  WHERE meeting_day = '` + dayString +
 //                  `' GROUP BY latitude, longitude;`;
                  
-// FINAL query
-
-if (hourNumber >= 10 && hourNumber < 12){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
+// FINAL query: This query solves the issue of finding time two hours from now when the time is between 10 and 12 and 22 and 24.
+// The parsed data is in the 12 hour clock system so I had to tell it to query meetings under certain conditions.
+if (hourNumber >= 10 && hourNumber <= 12){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
                  FROM aaMeetings
                  WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
                  AND (meeting_day = '` + dayString + "' and meeting_start < '" + '11:59:00' + "' and start_AMPM = '" + nowAMPM +`')
-                 OR (meeting_day = '` + dayString + "' and meeting_start >= '" + '0:01:00' + "' and start_AMPM = '" + twoNowAMPM +`')
+                 OR (meeting_day = '` + dayString + "' and meeting_start >= '" + '00:00:00' + "' and start_AMPM = '" + twoNowAMPM +`')
                  AND (meeting_day = '` + dayString + "' and meeting_start <= '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
                  GROUP BY latitude, longitude;`;
                  
-} else if (hourNumber >= 22 && hourNumber < 24){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
+} else if (hourNumber >= 22 && hourNumber <= 24){var aaQuery_1 = `SELECT latitude, longitude, json_agg(json_build_object('loc', location_name, 'address', street_address, 'time', meeting_start, 'AMPM', start_AMPM, 'name', group_name, 'day', meeting_day, 'types', meeting_type)) as meetings
                  FROM aaMeetings
                  WHERE (meeting_day = '` + dayString + "' and meeting_start > '" + nowTime + "' and start_AMPM = '" + nowAMPM +`')
-                 AND (meeting_day = '` + dayString + "' and meeting_start < '" + '11:59:00' + "' and start_AMPM = '" + nowAMPM +`')
-                 OR (meeting_day = '` + dayStringPlus + "' and meeting_start >= '" + '00:01:00' + "' and start_AMPM = '" + twoNowAMPM +`')
+                 AND (meeting_day = '` + dayString + "' and meeting_start < '" + '23:59:59' + "' and start_AMPM = '" + nowAMPM +`')
+                 OR (meeting_day = '` + dayStringPlus + "' and meeting_start >= '" + '00:00:00' + "' and start_AMPM = '" + twoNowAMPM +`')
                  AND (meeting_day = '` + dayStringPlus + "' and meeting_start <= '" + twoNowTime + "' and start_AMPM = '" + twoNowAMPM +`')
                  GROUP BY latitude, longitude;`;
     
@@ -141,41 +144,31 @@ if (hourNumber >= 10 && hourNumber < 12){var aaQuery_1 = `SELECT latitude, longi
 }
 
 
-                 
-                 console.log(aaQuery_1);
+        console.log(twoNowTime)         
+         console.log(aaQuery_1);
                  
 client1.query(aaQuery_1, (qerr, qres) => {
         if (qerr) { throw qerr }
         
+        // adding response to template
         else {
-            // var withinTwoHours = getTwoHours(qres.rows);
             var resp = hx + JSON.stringify(qres.rows) + jx;
             res.send(resp);
-            // client1.end();
+            // console.log(resp)
             console.log('AA) responded to request for aa meeting data');
             
         }
     });
 
 });
-      //sending sensorQuery to /sensordata
+      //getting sensor data
       app.get('/sensordata', function(req, res) {
 
 
       //defining new client and connecting with second set of sql credentials
       const client1 = new Pool (db_credentials_1);
 
-      //holds queried sensor data
-       //var sensorQuery = [];
-
-      //sending sensorQuery to /sensordata
-    //   app.get('/sensordata', function(req, res) {
-    //     //   res.send(sensorQuery);
-    //   });
-
-
-      //https://bl.ocks.org/d3noob/402dd382a51a4f6eea487f9a35566de0
-      //SQL statement to query frequencies of various temperature values: 
+      //SQL statement to query average temperature values every hour for a month
       var sensorQuery_1 = `WITH times as (
                                 SELECT sensorYear::int,
                                   sensorMonth::int,
@@ -197,38 +190,38 @@ client1.query(aaQuery_1, (qerr, qres) => {
       client1.query(sensorQuery_1, (qerr, qres) => {
           if (qerr) {throw qerr}
           else {
-              //pushing queried sensor data to sensorQuery
+              //combining queried sensor data with template
               res.end(template({sensorData: JSON.stringify(qres.rows)}));
               client1.end();
-              console.log(qres.rows);
-            //   sensorQuery.push(res.rows);
-            //   console.log(sensorQuery_1);
-            //   client2.end();
+            //   console.log(qres.rows);
           }
       });
     });
     
+        //getting processblog data
         app.get('/process', async function (req, res) {
+            console.log('AJAX just called the process endpoint')
+            //controlling asynchronicity with await
             if (req.query == {}){
                  res.send(await processBlog());
             } else {
-                 res.send(await processBlog(req.query.start,req.query.end,req.query.project));
+                 res.send(await processBlog(req.query.category));
             }
         });
 
         // Create a function to query data by dates and project 
-        function processBlog(minDate, maxDate, project){
+        function processBlog(project){
             return new Promise(resolve => {
             var output = {};
         
-            minDate = minDate || "August 10 2019"
-            maxDate = maxDate || "December 20 2020"; 
+            var minDate = "August 10 2019"
+            var maxDate = "December 20 2020"; 
             project = project || 'all';
             
+            //empty array to hold blogposts for output
             output.blogpost = [];
             
-            //querying all databsae entries v v v
-            
+            //If all projects are selected, start a scan
             if (project != 'all'){
             var params = {
                 TableName : "processBlog_JO",
@@ -246,8 +239,7 @@ client1.query(aaQuery_1, (qerr, qres) => {
             
             dynamodb.query(params, onScan)
             
-            //scanning all of the projects an dates for the no sql v v v
-            
+            //else, use a query because it will be faster
             } else {
             var params = {
                 TableName: "processBlog_JO",
@@ -268,22 +260,22 @@ client1.query(aaQuery_1, (qerr, qres) => {
 
         }
         
-        console.log(params);
+        // console.log(params);
 
-// Use express-handlebars to get the output 
-
+        //process to format and organize the scan/query
         function onScan(err, data) {
             if (err) {
-                console.error("Error. Error JSON:", JSON.stringify(err, null, 2));
+                console.error("Error JSON:", JSON.stringify(err, null, 2));
             } else {
                 console.log("Scan succeeded.");
                 data.Items.forEach(function(item) {
                     output.blogpost.push({'project':item.project.S, 'date':item.date.S, 'content':item.content.S, 'skills':item.skills.S});
                 });
                 // console.log(data);
-                fs.readFile('templates/processblog.html', 'utf8', (error, data1) => {
-                    console.log(data1);
-                    var template = handlebars.compile(data1);
+                //reading the template file for input of the queried data
+                fs.readFile('processblog.html', 'utf8', (error, data) => {
+                    // console.log(data1);
+                    var template = handlebars.compile(data);
                     var html = template(output);
                     resolve(html);
                 });
