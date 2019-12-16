@@ -38,4 +38,4 @@ My idea in binding data to the end-user interface is that myself or a user can s
 
 ![Image](https://github.com/joutwater/Data-Structures/blob/master/Final_Assignment_2/PB_ss.png)
 
-I generally really enjoyed the process behind this project, not only as a way to inheretnly reflect on the semester but also as a way to learn a new functionality with ajax. I am excited to learn more about it and hopefully continue my blogs into the coming year.
+I really enjoyed the process behind this project, not only as a way to inherently reflect on the semester but also as a way to learn a new functionality with ajax. I am excited to learn more about it and hopefully continue my blogs into the coming year.
