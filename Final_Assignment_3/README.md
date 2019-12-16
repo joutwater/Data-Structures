@@ -2,6 +2,8 @@
 
 URL to project site: http://54.235.234.244:8080/sensordata
 
+[Assignment](https://github.com/visualizedata/data-structures/blob/master/final_assignment_3.md)
+
 ### Project Description
 This project is the culmination of past weekly assignments that focused on setting up an ioT sensor and logging temperature and time readings to a database. We had the sensor running for about thirty days and were collecting readings every five minutes. Depending on where you placed your sensor, you could tell a particular story about the world around the sensor. Please see the previous weekly [assignment](https://github.com/joutwater/Data-Structures/tree/master/week09) for more context surrounding this project.
 
