@@ -27,7 +27,7 @@ As I was creating blog posts during my first semester, I decided that a nice top
                         ":maxDate": {S: new Date(maxDate).toISOString()}
                     }
                 };
-
+(Please see code 201-285 for app.js code specific to this project. Also please see processblog.html as handlebar template, blog.js as jquery using ajax, blog.html as additional html hosting final html page with dropdown menu in the process blog, and finally stylesBlog.css. A lot of files working in unison!)
 
 The queried items are then placed in an array for output with values for each category, the template for the process blog is read in, and the data is sent to the endpoint. A jquery script and secondary html script are then introduced to create a category dropdown list to choose blog posts by the list of project names I created. The great part about ajax and handlebars is that the entire html page doesn’t need to be replaced, but just certain tags of the html can be replaced. I can see this being really useful when dealing with larger queries and websites with higher demand. Please see the diagram below that has helped me understand the system in use for the process blog website.
 
