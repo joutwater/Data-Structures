@@ -1,0 +1,151 @@
+    <!DOCTYPE html>
+    <meta charset="utf-8">
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <!-- Create a div where the graph will take place -->
+    <div id="tempSensor"></div>
+
+    <style>
+    select{
+      position: absolute;
+      left: 100px;
+      top: 100px;
+    }  
+
+    </style>
+
+    <body>
+
+      <!--button to change hour-->
+      <select class='hour'>
+        <option value='7'>7 AM</option>
+        <option value='8'>8 AM</option>
+        <option value='9'>9 AM</option>
+        <option value='18'>6 PM</option>
+        <option value='19'>7 PM</option>
+        <option value='20'>8 PM</option>
+      </select>
+      <svg></svg>
+
+    <script>
+
+
+    //handlebars for sensor data
+    var sensorData = {{{sensorData}}} ; 
+
+    // set the dimensions and margins of the graph
+    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+        width = 1200 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#tempSensor")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    //Read the data
+        var newsensordata = sensorData.map(d =>{
+          return {'date': d3.timeParse("%Y-%m-%dT%H")(d.sensoryear +'-' + d.sensormonth + '-' +  + d.sensorday + 'T' + d.sensorhour),
+          'value': d.tempvalue}
+        });
+
+
+      var x;
+      var y;
+      drawAxis(newsensordata);
+      drawLine(newsensordata,2);
+
+      d3.select('select.hour')
+        .on('change',handleSelectChange);
+
+      // filtering and formatting hours from the dataset:
+      function drawLine(data,hour) {
+        let thisLineData = data.filter(d => {
+          return d.date.getHours() === hour;
+        }).map(d => {
+          return {date: new Date(d.date.setHours(0,0,0,0)), value: d.value};
+        })
+
+        // Add the line
+        svg.append("path")
+          .datum(thisLineData)
+          .attr("class","sensor-line")
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 1.5)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.date) })
+            .y(function(d) { return y(d.value) })
+            )
+
+    }
+
+    //function to draw new lines with changing hour selection
+    function updateLine(data,hour) {
+      const t = d3.transition().duration(1000)
+
+        let new_line_data = data.filter(d => {
+          return d.date.getHours() === +hour;
+        }).map(d => {
+          return {date: d.date, value: d.value};
+        })
+
+        console.log(new_line_data,hour);
+
+        svg.select("path.sensor-line")
+          .datum(new_line_data)
+          //adding transition between line updates
+          .transition(t)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.date) })
+            .y(function(d) { return y(d.value) })
+            )
+
+
+    }
+
+    //drawing axes
+    function drawAxis(data) {
+      let x_domain = d3.extent(data, function(d) { return d.date; });
+      x_domain[0] = stripHours(x_domain[0]);
+      x_domain[1] = stripHours(x_domain[1]);
+
+      // Add X axis --> it is a date format
+        x = d3.scaleTime()
+          .domain(x_domain)
+          .range([ 0, width ]);
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+
+        // Add Y axis
+        y = d3.scaleLinear()
+          .domain([69, d3.max(data, function(d) { return +d.value; })])
+          .range([ height, 0 ]);
+        svg.append("g")
+          .call(d3.axisLeft(y));
+    }
+
+    function stripHours(date) {
+      return new Date(date.setHours(0,0,0,0));
+    }
+
+    //event handler for selecting new hour
+    function handleSelectChange() {
+      let new_hour = d3.select(this).property('value');
+      updateLine(newsensordata,new_hour);
+    }
+
+    function filterData(data,hour) {
+      return data.filter(d=>d.date.getHours() === hour);
+    }
+
+
+    </script>
+    </body>
